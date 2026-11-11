@@ -1198,56 +1198,79 @@
         /**
          * Busca o .mp3 na página da Rádioagência via proxy CORS (executado sob demanda ao clicar na notícia)
          */
-        async function fetchMp3FromAudioPage(article) {
-            if (article.audioUrl || !article.targetAudioPageUrl) return article.audioUrl;
+async function fetchMp3FromAudioPage(article) {
+    if (article.audioUrl) return article.audioUrl;
+    if (!article.targetAudioPageUrl) return null;
 
-            const proxies = [
-                `https://api.allorigins.win/get?url=${encodeURIComponent(article.targetAudioPageUrl)}`,
-                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(article.targetAudioPageUrl)}`
-            ];
+    // Garante que o URL da página é absoluto
+    let targetUrl = article.targetAudioPageUrl;
+    if (targetUrl.startsWith('/')) {
+        targetUrl = 'https://agenciabrasil.ebc.com.br' + targetUrl;
+    }
 
-            for (const proxyUrl of proxies) {
-                try {
-                    const fetchOptions = (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') ? { signal: AbortSignal.timeout(5000) } : {};
-                    const res = await fetch(proxyUrl, fetchOptions);
-                    if (!res.ok) continue;
+    const proxies = [
+        `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
+        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
+    ];
 
-                    let htmlContent = "";
-                    if (proxyUrl.includes('allorigins')) {
-                        const json = await res.json();
-                        htmlContent = json && json.contents ? json.contents : "";
-                    } else {
-                        htmlContent = await res.text();
-                    }
+    for (const proxyUrl of proxies) {
+        try {
+            const fetchOptions = (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') 
+                ? { signal: AbortSignal.timeout(6000) } 
+                : {};
+                
+            const res = await fetch(proxyUrl, fetchOptions);
+            if (!res.ok) continue;
 
-                    if (htmlContent) {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(htmlContent, "text/html");
-                        
-                        const downloadBtn = doc.querySelector('a.btn-download-audio');
-                        if (downloadBtn && downloadBtn.getAttribute('href')) {
-                            article.audioUrl = downloadBtn.getAttribute('href');
-                            return article.audioUrl;
-                        }
+            let htmlContent = "";
+            if (proxyUrl.includes('allorigins')) {
+                const json = await res.json();
+                htmlContent = json && json.contents ? json.contents : "";
+            } else {
+                htmlContent = await res.text();
+            }
 
-                        const audioTag = doc.querySelector('audio source, audio');
-                        if (audioTag && audioTag.getAttribute('src')) {
-                            article.audioUrl = audioTag.getAttribute('src');
-                            return article.audioUrl;
-                        }
+            if (htmlContent) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, "text/html");
+                
+                // Função auxiliar para converter links relativos em absolutos
+                const makeAbsolute = (url) => {
+                    if (!url) return null;
+                    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+                    if (url.startsWith('//')) return 'https:' + url;
+                    if (url.startsWith('/')) return 'https://agenciabrasil.ebc.com.br' + url;
+                    return 'https://agenciabrasil.ebc.com.br/' + url;
+                };
 
-                        const mp3Anchor = doc.querySelector('a[href*=".mp3"]');
-                        if (mp3Anchor && mp3Anchor.getAttribute('href')) {
-                            article.audioUrl = mp3Anchor.getAttribute('href');
-                            return article.audioUrl;
-                        }
-                    }
-                } catch (e) {
-                    console.warn(`Erro ao buscar áudio em ${article.targetAudioPageUrl}`, e);
+                // 1. Procura o botão principal de download
+                const downloadBtn = doc.querySelector('a.btn-download-audio');
+                if (downloadBtn && downloadBtn.getAttribute('href')) {
+                    article.audioUrl = makeAbsolute(downloadBtn.getAttribute('href'));
+                    return article.audioUrl;
+                }
+
+                // 2. Procura a etiqueta <audio>
+                const audioTag = doc.querySelector('audio source, audio');
+                if (audioTag && audioTag.getAttribute('src')) {
+                    article.audioUrl = makeAbsolute(audioTag.getAttribute('src'));
+                    return article.audioUrl;
+                }
+
+                // 3. Procura qualquer link que termine em .mp3
+                const mp3Anchor = doc.querySelector('a[href*=".mp3"]');
+                if (mp3Anchor && mp3Anchor.getAttribute('href')) {
+                    article.audioUrl = makeAbsolute(mp3Anchor.getAttribute('href'));
+                    return article.audioUrl;
                 }
             }
-            return null;
+        } catch (e) {
+            console.warn(`Erro ao tentar proxy ${proxyUrl} para ${targetUrl}`, e);
         }
+    }
+    return null;
+}
 
         function formatDate(dateObj) {
             if (isNaN(dateObj.getTime())) return 'Hoje';
