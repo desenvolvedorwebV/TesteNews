@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agência Brasil & Rádioagência Nacional | Notícias Unificadas</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables & Theme Setup */
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-hover: #f1f5f9;
+            --bg-nav: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent-green: #047857;
+            --accent-green-hover: #065f46;
+            --accent-purple: #6d28d9;
+            --accent-yellow: #f59e0b;
+            --accent-blue: #2563eb;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --card-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --transition-speed: 0.25s;
+        }
+
+        .dark {
+            --bg-primary: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-surface-hover: #334155;
+            --bg-nav: rgba(30, 41, 59, 0.95);
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+            --accent-green-hover: #059669;
+            --accent-purple: #8b5cf6;
+            --accent-yellow: #fbbf24;
+            --accent-blue: #3b82f6;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Base Resets */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+
+        /* Top Header Bar */
+        .top-bar {
+            background-color: #064e3b;
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-info {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        /* Main Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: var(--bg-nav);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color var(--transition-speed);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, #047857 0%, #6d28d9 100%);
+            color: #ffffff;
+            font-weight: 800;
+            padding: 0.5rem 0.85rem;
+            border-radius: var(--radius-md);
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .logo-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+
+        .logo-title span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-surface-hover);
+            color: var(--text-primary);
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn-reload {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--accent-green);
+            color: #ffffff;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-reload:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        /* Controls Section */
+        .controls-section {
+            max-width: 1200px;
+            margin: 1.5rem auto 0;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.15);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+        }
+
+        .filter-chip {
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover {
+            background-color: var(--bg-surface-hover);
+            color: var(--text-primary);
+        }
+
+        .filter-chip.active {
+            background-color: var(--accent-green);
+            color: #ffffff;
+            border-color: var(--accent-green);
+        }
+
+        /* Status Alert Banner */
+        .status-banner {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-banner.warning {
+            display: flex;
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+        .dark .status-banner.warning {
+            background-color: #451a03;
+            color: #fcd34d;
+            border-color: #78350f;
+        }
+
+        /* Layout Main */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-header h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-header .indicator {
+            width: 8px;
+            height: 24px;
+            background-color: var(--accent-green);
+            border-radius: 4px;
+        }
+
+        /* Destaques Grid */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 900px) {
+            .highlights-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--accent-green);
+        }
+
+        .card-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background-color: var(--bg-surface-hover);
+            overflow: hidden;
+        }
+
+        .card-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.04);
+        }
+
+        .card-badges {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+
+        .card-badge {
+            background-color: rgba(4, 120, 87, 0.9);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35rem 0.75rem;
+            border-radius: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+
+        .source-badge {
+            background-color: rgba(15, 23, 42, 0.85);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35rem 0.75rem;
+            border-radius: 2rem;
+            backdrop-filter: blur(4px);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .source-badge.radio {
+            background-color: rgba(109, 40, 217, 0.9);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .card-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        /* Estilização do Leitor de Áudio Integrado */
+        .audio-player-wrapper {
+            margin-bottom: 1rem;
+            padding: 0.65rem 0.85rem;
+            background-color: rgba(109, 40, 217, 0.08);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(109, 40, 217, 0.25);
+        }
+
+        .audio-player-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .audio-player-mini {
+            width: 100%;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            outline: none;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .read-more-link {
+            color: var(--accent-green);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: gap 0.2s;
+        }
+
+        .card:hover .read-more-link {
+            gap: 0.6rem;
+        }
+
+        /* Lista de Notícias */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .news-item {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            transition: all 0.2s;
+            box-shadow: var(--card-shadow);
+        }
+
+        .news-item:hover {
+            border-color: var(--accent-green);
+            transform: translateX(4px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .news-item-img-container {
+            width: 140px;
+            height: 95px;
+            min-width: 140px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background-color: var(--bg-surface-hover);
+            position: relative;
+        }
+
+        .news-item-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .news-item-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.78rem;
+            flex-wrap: wrap;
+        }
+
+        .news-item-category {
+            color: var(--accent-green);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .news-item-date {
+            color: var(--text-muted);
+        }
+
+        .news-item-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.35;
+        }
+
+        .news-item-title a:hover {
+            color: var(--accent-green);
+        }
+
+        .news-item-author {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Loader */
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 1rem;
+            gap: 1rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            max-width: 800px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--bg-surface-hover);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background-color 0.2s;
+        }
+
+        .modal-close:hover {
+            background-color: var(--border-color);
+        }
+
+        .modal-body h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            font-family: 'Merriweather', serif;
+            line-height: 1.3;
+        }
+
+        .modal-body .modal-meta {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .modal-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            margin: 1.25rem 0;
+        }
+
+        .modal-body .article-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .modal-body .article-text p {
+            margin-bottom: 1.25rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 1.5rem;
+            margin-top: 4rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 768px) {
+            .top-bar-info {
+                display: none;
+            }
+            .news-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .news-item-img-container {
+                width: 100%;
+                height: 180px;
+            }
+            .modal-content {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bar de Utilidade do Topo -->
+    <div class="top-bar">
+        <div class="top-bar-info">
+            <span><i class="fa-solid fa-building-columns"></i> Empresa Brasil de Comunicação (EBC)</span>
+            <span><i class="fa-solid fa-rss"></i> Feeds: Agência Brasil + Rádioagência Nacional</span>
+        </div>
+        <div id="current-date">--:--</div>
+    </div>
+
+    <!-- Cabeçalho Principal -->
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-badge">EBC</div>
+                <div class="logo-title">
+                    <h1>PORTAL EBC NOTÍCIAS</h1>
+                    <span>Agência Brasil &amp; Rádioagência Nacional</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn-reload" id="btn-reload" title="Atualizar Notícias">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <span class="btn-text">Atualizar</span>
+                </button>
+                <button class="theme-toggle" id="theme-toggle" title="Alternar Tema">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Controles de Busca e Filtros -->
+    <div class="controls-section">
+        <div class="search-filter-row">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar notícias por título ou palavras-chave...">
+            </div>
+
+            <div class="category-filters" id="category-filters">
+                <!-- Chips de categorias unificadas gerados via JS -->
+            </div>
+        </div>
+
+        <!-- Alerta quando operando via dados de fallback local -->
+        <div id="status-banner" class="status-banner warning">
+            <div>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span id="status-message">Exibindo notícias pré-carregadas locais.</span>
+            </div>
+            <button onclick="document.getElementById('status-banner').style.display='none'" style="color:inherit; font-weight:bold;">&times;</button>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <main>
+        <!-- Estado de Carregamento -->
+        <div id="loading-state" class="loader-container">
+            <div class="spinner"></div>
+            <p>Carregando, extraindo áudios e deduplicando notícias da EBC...</p>
+        </div>
+
+        <!-- Seção Destaques (Grid Visual) -->
+        <section id="highlights-section" style="display: none;">
+            <div class="section-header">
+                <div class="indicator"></div>
+                <h2>Destaques das Principais Notícias</h2>
+            </div>
+            <div class="highlights-grid" id="highlights-container">
+                <!-- Inserido dinamicamente via JS -->
+            </div>
+        </section>
+
+        <!-- Seção Últimas Notícias (Lista) -->
+        <section id="list-section" style="display: none;">
+            <div class="section-header">
+                <div class="indicator"></div>
+                <h2 id="list-section-title">Últimas Notícias</h2>
+            </div>
+            <div class="news-list" id="list-container">
+                <!-- Inserido dinamicamente via JS -->
+            </div>
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <i class="fa-solid fa-newspaper"></i>
+                <p>Nenhuma notícia encontrada para esta seleção.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para Leitura Interna / Rápida -->
+    <div class="modal-overlay" id="article-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body">
+                <!-- Conteúdo do Artigo -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="footer-content">
+            <p><strong>Portal EBC de Notícias</strong> | Leitura 100% integrada e unificada da Agência Brasil e Rádioagência Nacional.</p>
+            <p style="font-size: 0.8rem;">Desenvolvido para hospedagem no GitHub Pages com HTML, CSS e JS puros.</p>
+        </div>
+    </footer>
+
+    <!-- Lógica JavaScript ES6+ -->
+    <script>
+        /**
+         * Mapeamento Unificado de Categorias (Combinação de Agência Brasil + Rádioagência Nacional)
+         */
+        const CATEGORY_MAP = [
+            { id: 'all', name: 'Todas as Notícias' },
+            { 
+                id: 'direitos-humanos', 
+                name: 'Direitos Humanos',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/direitos-humanos/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/direitos-humanos/feed.xml'
+                ]
+            },
+            { 
+                id: 'economia', 
+                name: 'Economia',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/economia/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/economia/feed.xml'
+                ]
+            },
+            { 
+                id: 'educacao', 
+                name: 'Educação',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/educacao/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/educacao/feed.xml'
+                ]
+            },
+            { 
+                id: 'esportes', 
+                name: 'Esportes',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/esportes/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/esportes/feed.xml'
+                ]
+            },
+            { 
+                id: 'geral', 
+                name: 'Geral',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/geral/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/geral/feed.xml'
+                ]
+            },
+            { 
+                id: 'internacional', 
+                name: 'Internacional',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/internacional/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/internacional/feed.xml'
+                ]
+            },
+            { 
+                id: 'justica', 
+                name: 'Justiça',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/justica/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/justica/feed.xml'
+                ]
+            },
+            { 
+                id: 'politica', 
+                name: 'Política',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/politica/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/politica/feed.xml'
+                ]
+            },
+            { 
+                id: 'saude', 
+                name: 'Saúde',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/rss/saude/feed.xml',
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/saude/feed.xml'
+                ]
+            },
+            { 
+                id: 'cultura', 
+                name: 'Cultura',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/cultura/feed.xml'
+                ]
+            },
+            { 
+                id: 'meio-ambiente', 
+                name: 'Meio Ambiente',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/meio-ambiente/feed.xml'
+                ]
+            },
+            { 
+                id: 'pesquisa-e-inovacao', 
+                name: 'Pesquisa e Inovação',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/pesquisa-e-inovacao/feed.xml'
+                ]
+            },
+            { 
+                id: 'seguranca', 
+                name: 'Segurança',
+                urls: [
+                    'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/seguranca/feed.xml'
+                ]
+            }
+        ];
+
+        // Feeds Iniciais para a Home (Últimas Notícias)
+        const HOME_FEEDS = [
+            'https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml',
+            'https://agenciabrasil.ebc.com.br/radioagencia-nacional/rss/ultimasnoticias/feed.xml'
+        ];
+
+        // XML Fallback de segurança local
+        const LOCAL_FALLBACK_XML = `<?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xml:base="https://agenciabrasil.ebc.com.br/feed/ultimasnoticias/feed.xml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Feed Últimas</title>
+    <link>https://agenciabrasil.ebc.com.br/feed/ultimasnoticias/feed.xml</link>
+    <description>A Agência Brasil é a agência de notícias da EBC.</description>
+    <language>pt-br</language>
+    <item>
+      <title>Operação mira esquema de sonegação de impostos de combustíveis no Rio</title>
+      <link>https://agenciabrasil.ebc.com.br/radioagencia-nacional/geral/noticia/2026-11/operacao-mira-esquema-de-sonegacao-de-impostos-de-combustiveis-no-rio</link>
+      <imagem-destaque>https://imagens.ebc.com.br/A7ThkGPWGLemvOlUYRuCXERbQN0=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/03/18/sedetranspetrotrajetoria_site.jpg?itok=dGVjzsy7</imagem-destaque>
+      <enclosure url="https://medias.ebc.com.br/radioagencia/2026/11/11-11-26_tatiana_alves_sonegacao_combustiveis.mp3" type="audio/mpeg" />
+      <description><![CDATA[<p>O Ministério Público do Rio de Janeiro realizou, na manhã desta quarta-feira (11), uma grande operação contra um suposto esquema bilionário de sonegação fiscal no setor de combustíveis. Ao todo, foram cumpridos 17 mandados de busca e apreensão.</p>]]></description>
+      <pubDate>Wed, 11 Nov 2026 14:20:00 -0300</pubDate>
+      <dc:creator>Tatiana Alves - Repórter da Rádio Nacional</dc:creator>
+      <guid isPermaLink="false">1708420</guid>
+      <category>Geral</category>
+    </item>
+    <item>
+      <title>34º Festival MixBrasil reúne cinema, teatro, games e literatura em SP</title>
+      <link>https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/34o-festival-mixbrasil-reune-cinema-teatro-games-e-literatura-em-sp</link>
+      <imagem-destaque>https://imagens.ebc.com.br/fNm04wme7WWDK0AkOghD4HE7yJE=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/11/festival-mixbrasil-2026-sp-1024x689.jpg?itok=h5xWsEAi</imagem-destaque>
+      <description><![CDATA[<p>Com uma programação dedicada ao público LGBTQIA+, o 34º Festival MixBrasil de Cultura da Diversidade ocupa espaços culturais de São Paulo reunindo cinema, teatro e artes plásticas.</p>]]></description>
+      <pubDate>Wed, 11 Nov 2026 13:57:00 -0300</pubDate>
+      <dc:creator>Matheus Crobelatti*</dc:creator>
+      <guid isPermaLink="false">1708417</guid>
+      <category>Cultura</category>
+    </item>
+    <item>
+      <title>Reforma tributária: governo apresentará texto para facilitar adaptação</title>
+      <link>https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/reforma-tributaria-governo-apresentara-texto-para-facilitar-adaptacao</link>
+      <imagem-destaque>https://imagens.ebc.com.br/dwfyigYnDTn-M7vXxBInP1tTkxQ=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/09/03/lula2927.jpg?itok=1x9gmrPH</imagem-destaque>
+      <description><![CDATA[<p>O governo federal vai encaminhar ao Congresso Nacional uma proposta para criar uma regra de transição na cobrança da Contribuição sobre Bens e Serviços (CBS).</p>]]></description>
+      <pubDate>Wed, 11 Nov 2026 13:32:00 -0300</pubDate>
+      <dc:creator>Pedro Peduzzi</dc:creator>
+      <guid isPermaLink="false">1708415</guid>
+      <category>Economia</category>
+    </item>
+  </channel>
+</rss>`;
+
+        // Estado Global da Aplicação
+        let allArticles = [];
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        // Elementos DOM
+        const loadingState = document.getElementById('loading-state');
+        const highlightsSection = document.getElementById('highlights-section');
+        const listSection = document.getElementById('list-section');
+        const highlightsContainer = document.getElementById('highlights-container');
+        const listContainer = document.getElementById('list-container');
+        const categoryFiltersContainer = document.getElementById('category-filters');
+        const searchInput = document.getElementById('search-input');
+        const statusBanner = document.getElementById('status-banner');
+        const statusMessage = document.getElementById('status-message');
+        const btnReload = document.getElementById('btn-reload');
+        const themeToggle = document.getElementById('theme-toggle');
+        const currentDateEl = document.getElementById('current-date');
+        const articleModal = document.getElementById('article-modal');
+        const modalBody = document.getElementById('modal-body');
+        const modalClose = document.getElementById('modal-close');
+        const emptyState = document.getElementById('empty-state');
+
+        function updateDate() {
+            const now = new Date();
+            currentDateEl.textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeToggle.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        });
+
+        async function fetchFeedDirect(targetUrl) {
+            try {
+                const response = await fetch(targetUrl);
+                if (response.ok) {
+                    return await response.text();
+                }
+            } catch (e) {
+                console.warn(`Fetch direto para ${targetUrl} falhou, tentando via fallback.`, e);
+            }
+            return null;
+        }
+
+        /**
+         * Parser de XML RSS com identificação e extração de páginas de áudio
+         */
+        function parseXML(xmlString, fallbackSourceHint = '') {
+            if (!xmlString) return [];
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+            const items = xmlDoc.querySelectorAll("item");
+            const parsedArticles = [];
+
+            items.forEach(item => {
+                const titleNode = item.querySelector("title");
+                const title = titleNode ? titleNode.textContent.trim() : "";
+                
+                const linkNode = item.querySelector("link");
+                const link = linkNode ? linkNode.textContent.trim() : "#";
+                
+                const pubDateNode = item.querySelector("pubDate");
+                const pubDateStr = pubDateNode ? pubDateNode.textContent.trim() : "";
+                
+                const creator = item.querySelector("creator") || item.querySelector("dc\\:creator");
+                const author = creator ? creator.textContent.trim() : "Redação EBC";
+                
+                const categories = Array.from(item.querySelectorAll("category")).map(c => c.textContent.trim());
+                const primaryCategory = categories[0] || "Geral";
+
+                let image = "";
+                const imgTag = item.querySelector("imagem-destaque");
+                if (imgTag && imgTag.textContent) {
+                    image = imgTag.textContent.trim();
+                }
+
+                const descNode = item.querySelector("description");
+                const rawDescription = descNode ? descNode.textContent : "";
+                
+                if (!image && rawDescription) {
+                    const tmp = document.createElement('div');
+                    tmp.innerHTML = rawDescription;
+                    const imgs = tmp.querySelectorAll('img');
+                    for (let img of imgs) {
+                        const src = img.getAttribute('src');
+                        if (src && !src.includes('logo-agenciabrasil') && !src.includes('ebc.png') && !src.includes('ebc.gif')) {
+                            image = src;
+                            break;
+                        }
+                    }
+                }
+
+                // 1. Extração direta de enclosure
+                let audioUrl = "";
+                const enclosure = item.querySelector("enclosure");
+                if (enclosure) {
+                    const type = enclosure.getAttribute("type") || "";
+                    const url = enclosure.getAttribute("url") || "";
+                    if (type.indexOf("audio") !== -1 || url.endsWith(".mp3") || url.endsWith(".wav") || url.endsWith(".m4a")) {
+                        audioUrl = url;
+                    }
+                }
+
+                // 2. Verificação se o link começa com/contém a estrutura de áudio da Rádioagência
+                let targetAudioPageUrl = "";
+                if (link.includes('/radioagencia-nacional/') || link.includes('/audio/') || link.includes('/audio')) {
+                    targetAudioPageUrl = link;
+                } else if (rawDescription) {
+                    const tmpDivPage = document.createElement('div');
+                    tmpDivPage.innerHTML = rawDescription;
+                    const audioPageLink = tmpDivPage.querySelector('a[href*="/radioagencia-nacional/"], a[href*="/audio/"]');
+                    if (audioPageLink) {
+                        targetAudioPageUrl = audioPageLink.getAttribute('href');
+                    }
+                }
+
+                const tmpDiv = document.createElement('div');
+                tmpDiv.innerHTML = rawDescription;
+                const unwantedElements = tmpDiv.querySelectorAll('img, a:has(img), style, script');
+                for (let i = 0; i < unwantedElements.length; i++) {
+                    unwantedElements[i].remove();
+                }
+                const cleanText = tmpDiv.textContent.replace(/\s+/g, ' ').trim();
+
+                const isRadio = link.includes('radioagencia-nacional') || 
+                                targetAudioPageUrl !== '' ||
+                                author.toLowerCase().includes('rádio') || 
+                                audioUrl !== '';
+                const source = isRadio ? 'Rádioagência Nacional' : 'Agência Brasil';
+
+                if (title) {
+                    parsedArticles.push({
+                        id: link || title,
+                        title: title,
+                        link: link,
+                        pubDate: pubDateStr ? new Date(pubDateStr) : new Date(),
+                        pubDateFormatted: pubDateStr ? formatDate(new Date(pubDateStr)) : 'Data recente',
+                        author: author,
+                        category: primaryCategory,
+                        image: image || 'https://placehold.co/800x450/047857/ffffff?text=Not%C3%ADcias+EBC',
+                        rawDescription: rawDescription,
+                        cleanExcerpt: cleanText,
+                        audioUrl: audioUrl,
+                        targetAudioPageUrl: targetAudioPageUrl,
+                        source: source
+                    });
+                }
+            });
+
+            return parsedArticles;
+        }
+
+        /**
+         * Acessa o link da matéria de áudio e extrai o .mp3 contido na tag <a class="btn-download-audio" href="...">
+         */
+        async function fetchMp3FromAudioPage(article) {
+            if (article.audioUrl || !article.targetAudioPageUrl) return;
+
+            const proxies = [
+                `https://api.allorigins.win/get?url=${encodeURIComponent(article.targetAudioPageUrl)}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(article.targetAudioPageUrl)}`
+            ];
+
+            for (const proxyUrl of proxies) {
+                try {
+                    const fetchOptions = (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') ? { signal: AbortSignal.timeout(4000) } : {};
+                    const res = await fetch(proxyUrl, fetchOptions);
+                    if (!res.ok) continue;
+
+                    let htmlContent = "";
+                    if (proxyUrl.includes('allorigins')) {
+                        const json = await res.json();
+                        htmlContent = json && json.contents ? json.contents : "";
+                    } else {
+                        htmlContent = await res.text();
+                    }
+
+                    if (htmlContent) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlContent, "text/html");
+                        
+                        // Busca especificamente pela tag <a class="btn-download-audio">
+                        const downloadBtn = doc.querySelector('a.btn-download-audio');
+                        if (downloadBtn && downloadBtn.getAttribute('href')) {
+                            article.audioUrl = downloadBtn.getAttribute('href');
+                            return;
+                        }
+
+                        // Fallback secundário no HTML para tags <audio> ou links .mp3
+                        const audioTag = doc.querySelector('audio source, audio');
+                        if (audioTag && audioTag.getAttribute('src')) {
+                            article.audioUrl = audioTag.getAttribute('src');
+                            return;
+                        }
+
+                        const mp3Anchor = doc.querySelector('a[href*=".mp3"]');
+                        if (mp3Anchor && mp3Anchor.getAttribute('href')) {
+                            article.audioUrl = mp3Anchor.getAttribute('href');
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.warn(`Erro ao buscar áudio em ${article.targetAudioPageUrl}`, e);
+                }
+            }
+        }
+
+        function formatDate(dateObj) {
+            if (isNaN(dateObj.getTime())) return 'Hoje';
+            return dateObj.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function normalizeTitle(str) {
+            return str
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^\w\s]/gi, '')
+                .trim();
+        }
+
+        function deduplicateArticles(articles) {
+            const seenTitles = new Map();
+            const uniqueArticles = [];
+
+            for (const article of articles) {
+                const normTitle = normalizeTitle(article.title);
+                
+                if (!seenTitles.has(normTitle)) {
+                    seenTitles.set(normTitle, article);
+                    uniqueArticles.push(article);
+                } else {
+                    const existing = seenTitles.get(normTitle);
+                    if (!existing.audioUrl && (article.audioUrl || article.targetAudioPageUrl)) {
+                        const index = uniqueArticles.indexOf(existing);
+                        if (index !== -1) {
+                            uniqueArticles[index] = article;
+                            seenTitles.set(normTitle, article);
+                        }
+                    }
+                }
+            }
+
+            return uniqueArticles.sort((a, b) => b.pubDate - a.pubDate);
+        }
+
+        async function loadNews(categoryId = 'all') {
+            showLoading(true);
+            let fetchedArticles = [];
+            let isFallbackUsed = false;
+
+            let urlsToFetch = [];
+            if (categoryId === 'all') {
+                urlsToFetch = HOME_FEEDS;
+            } else {
+                const catObj = CATEGORY_MAP.find(c => c.id === categoryId);
+                urlsToFetch = catObj && catObj.urls ? catObj.urls : HOME_FEEDS;
+            }
+
+            const results = await Promise.allSettled(
+                urlsToFetch.map(url => fetchFeedDirect(url).then(xml => parseXML(xml, url)))
+            );
+
+            results.forEach(res => {
+                if (res.status === 'fulfilled' && Array.isArray(res.value)) {
+                    fetchedArticles.push(...res.value);
+                }
+            });
+
+            if (fetchedArticles.length === 0) {
+                fetchedArticles = parseXML(LOCAL_FALLBACK_XML, 'agenciabrasil');
+                isFallbackUsed = true;
+            }
+
+            if (isFallbackUsed) {
+                statusMessage.textContent = "Exibindo notícias armazenadas em cache local.";
+                statusBanner.style.display = 'flex';
+            } else {
+                statusBanner.style.display = 'none';
+            }
+
+            allArticles = deduplicateArticles(fetchedArticles);
+
+            // Busca os arquivos MP3 nas páginas contendo links da Rádioagência
+            const pendingAudioArticles = allArticles.filter(art => !art.audioUrl && art.targetAudioPageUrl);
+            if (pendingAudioArticles.length > 0) {
+                await Promise.allSettled(pendingAudioArticles.map(art => fetchMp3FromAudioPage(art)));
+            }
+
+            showLoading(false);
+            renderPage();
+        }
+
+        function renderPage() {
+            const filtered = allArticles.filter(art => {
+                return searchQuery === '' || 
+                    art.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    art.cleanExcerpt.toLowerCase().includes(searchQuery.toLowerCase());
+            });
+
+            if (filtered.length === 0) {
+                highlightsSection.style.display = 'none';
+                listSection.style.display = 'block';
+                listContainer.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            if (searchQuery === '' && filtered.length >= 3) {
+                highlightsSection.style.display = 'block';
+                const highlights = filtered.slice(0, 4);
+                const remaining = filtered.slice(4);
+
+                renderHighlights(highlights);
+                renderList(remaining, "Mais Notícias");
+            } else {
+                highlightsSection.style.display = 'none';
+                listSection.style.display = 'block';
+                renderList(filtered, searchQuery !== '' ? `Resultados da busca (${filtered.length})` : "Todas as Notícias");
+            }
+        }
+
+        function renderHighlights(items) {
+            highlightsContainer.innerHTML = '';
+            
+            items.forEach((item) => {
+                const card = document.createElement('article');
+                card.className = 'card';
+                
+                card.innerHTML = `
+                    <div class="card-image-wrapper">
+                        <img class="card-img" src="${item.image}" alt="${escapeHtml(item.title)}" onerror="this.src='https://placehold.co/800x450/047857/ffffff?text=EBC+Noticias'">
+                        <div class="card-badges">
+                            <span class="card-badge">${escapeHtml(item.category)}</span>
+                            <span class="source-badge ${item.audioUrl ? 'radio' : ''}">
+                                <i class="fa-solid ${item.audioUrl ? 'fa-podcast' : 'fa-newspaper'}"></i>
+                                ${escapeHtml(item.source)}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span><i class="fa-regular fa-clock"></i> ${item.pubDateFormatted}</span>
+                        </div>
+                        <h3 class="card-title">${escapeHtml(item.title)}</h3>
+                        ${item.audioUrl ? `
+                            <div class="audio-player-wrapper">
+                                <div class="audio-player-label">
+                                    <span><i class="fa-solid fa-headphones"></i> Áudio da Reportagem</span>
+                                    <a href="${item.audioUrl}" download target="_blank" style="font-size:0.75rem; color:inherit;" title="Baixar MP3"><i class="fa-solid fa-download"></i> MP3</a>
+                                </div>
+                                <audio controls class="audio-player-mini" src="${item.audioUrl}"></audio>
+                            </div>
+                        ` : ''}
+                        <p class="card-excerpt">${escapeHtml(item.cleanExcerpt)}</p>
+                        <div class="card-footer">
+                            <button class="read-more-link btn-read-modal">
+                                Ler matéria completa <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                card.querySelector('.btn-read-modal').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal(item);
+                });
+
+                highlightsContainer.appendChild(card);
+            });
+        }
+
+        function renderList(items, title = "Últimas Notícias") {
+            listSection.style.display = 'block';
+            document.getElementById('list-section-title').textContent = title;
+            listContainer.innerHTML = '';
+
+            items.forEach(item => {
+                const el = document.createElement('article');
+                el.className = 'news-item';
+
+                el.innerHTML = `
+                    <div class="news-item-img-container">
+                        <img class="news-item-img" src="${item.image}" alt="${escapeHtml(item.title)}" onerror="this.src='https://placehold.co/400x250/047857/ffffff?text=EBC'">
+                    </div>
+                    <div class="news-item-content">
+                        <div class="news-item-header">
+                            <span class="news-item-category">${escapeHtml(item.category)}</span>
+                            <span>•</span>
+                            <span class="news-item-date"><i class="fa-regular fa-clock"></i> ${item.pubDateFormatted}</span>
+                            <span>•</span>
+                            <span class="source-badge ${item.audioUrl ? 'radio' : ''}" style="font-size:0.65rem; padding:0.2rem 0.5rem;">
+                                ${escapeHtml(item.source)}
+                            </span>
+                        </div>
+                        <h3 class="news-item-title">
+                            <a href="#" class="btn-read-modal">${escapeHtml(item.title)}</a>
+                        </h3>
+                        ${item.audioUrl ? `
+                            <div class="audio-player-wrapper" style="margin-top:0.4rem; margin-bottom:0.4rem;">
+                                <div class="audio-player-label">
+                                    <span><i class="fa-solid fa-headphones"></i> Áudio da Reportagem</span>
+                                    <a href="${item.audioUrl}" download target="_blank" style="font-size:0.75rem; color:inherit;" title="Baixar MP3"><i class="fa-solid fa-download"></i> MP3</a>
+                                </div>
+                                <audio controls class="audio-player-mini" style="margin-bottom:0;" src="${item.audioUrl}"></audio>
+                            </div>
+                        ` : ''}
+                        <div class="news-item-author">Por ${escapeHtml(item.author)}</div>
+                    </div>
+                `;
+
+                el.querySelector('.btn-read-modal').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal(item);
+                });
+
+                listContainer.appendChild(el);
+            });
+        }
+
+        function renderCategoryChips() {
+            categoryFiltersContainer.innerHTML = '';
+            
+            CATEGORY_MAP.forEach(cat => {
+                const chip = document.createElement('button');
+                chip.className = `filter-chip ${activeCategory === cat.id ? 'active' : ''}`;
+                chip.textContent = cat.name;
+                
+                chip.addEventListener('click', () => {
+                    if (activeCategory !== cat.id) {
+                        activeCategory = cat.id;
+                        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                        chip.classList.add('active');
+                        loadNews(activeCategory);
+                    }
+                });
+
+                categoryFiltersContainer.appendChild(chip);
+            });
+        }
+
+        function openModal(article) {
+            modalBody.innerHTML = `
+                <div class="card-badges" style="position:relative; top:0; left:0; margin-bottom:1rem;">
+                    <span class="card-badge">${escapeHtml(article.category)}</span>
+                    <span class="source-badge ${article.audioUrl ? 'radio' : ''}">
+                        <i class="fa-solid ${article.audioUrl ? 'fa-podcast' : 'fa-newspaper'}"></i>
+                        ${escapeHtml(article.source)}
+                    </span>
+                </div>
+                <h2>${escapeHtml(article.title)}</h2>
+                ${article.audioUrl ? `
+                    <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
+                        <div class="audio-player-label" style="font-size: 0.9rem;">
+                            <span><i class="fa-solid fa-headphones"></i> Ouça a Reportagem Completa</span>
+                            <a href="${article.audioUrl}" download target="_blank" style="font-size:0.8rem; color:inherit;"><i class="fa-solid fa-download"></i> Baixar MP3</a>
+                        </div>
+                        <audio controls style="width: 100%; height: 40px;" src="${article.audioUrl}"></audio>
+                    </div>
+                ` : ''}
+                <div class="modal-meta">
+                    <span><i class="fa-regular fa-clock"></i> Publicado em: ${article.pubDateFormatted}</span>
+                    <span><i class="fa-regular fa-user"></i> Por: ${escapeHtml(article.author)}</span>
+                </div>
+                ${article.image ? `<img src="${article.image}" alt="${escapeHtml(article.title)}">` : ''}
+                <div class="article-text">
+                    ${article.rawDescription}
+                </div>
+            `;
+            articleModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            articleModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        articleModal.addEventListener('click', (e) => {
+            if (e.target === articleModal) closeModal();
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.trim();
+            renderPage();
+        });
+
+        btnReload.addEventListener('click', () => {
+            const icon = btnReload.querySelector('i');
+            icon.classList.add('fa-spin');
+            loadNews(activeCategory).finally(() => {
+                setTimeout(() => icon.classList.remove('fa-spin'), 500);
+            });
+        });
+
+        function showLoading(show) {
+            loadingState.style.display = show ? 'flex' : 'none';
+            if (show) {
+                highlightsSection.style.display = 'none';
+                listSection.style.display = 'none';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateDate();
+            initTheme();
+            renderCategoryChips();
+            loadNews('all');
+        });
+    </script>
+</body>
+</html>
