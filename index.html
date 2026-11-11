@@ -1198,78 +1198,68 @@
         /**
          * Busca o .mp3 na página da Rádioagência via proxy CORS (executado sob demanda ao clicar na notícia)
          */
+/**
+ * Extrai o link direto do MP3 a partir da página de áudio da Rádioagência
+ */
 async function fetchMp3FromAudioPage(article) {
     if (article.audioUrl) return article.audioUrl;
     if (!article.targetAudioPageUrl) return null;
 
-    // Garante que o URL da página é absoluto
     let targetUrl = article.targetAudioPageUrl;
     if (targetUrl.startsWith('/')) {
         targetUrl = 'https://agenciabrasil.ebc.com.br' + targetUrl;
     }
 
-    const proxies = [
-        `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
-        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
-    ];
+    return new Promise((resolve) => {
+        // Criamos um iframe oculto para carregar a página da Rádio no próprio navegador da pessoa
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = targetUrl;
 
-    for (const proxyUrl of proxies) {
-        try {
-            const fetchOptions = (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') 
-                ? { signal: AbortSignal.timeout(6000) } 
-                : {};
-                
-            const res = await fetch(proxyUrl, fetchOptions);
-            if (!res.ok) continue;
+        // Timeout de segurança (3.5 segundos) caso a página demore a responder
+        const timer = setTimeout(() => {
+            cleanup();
+            resolve(null);
+        }, 3500);
 
-            let htmlContent = "";
-            if (proxyUrl.includes('allorigins')) {
-                const json = await res.json();
-                htmlContent = json && json.contents ? json.contents : "";
-            } else {
-                htmlContent = await res.text();
+        function cleanup() {
+            clearTimeout(timer);
+            if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
             }
-
-            if (htmlContent) {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlContent, "text/html");
-                
-                // Função auxiliar para converter links relativos em absolutos
-                const makeAbsolute = (url) => {
-                    if (!url) return null;
-                    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-                    if (url.startsWith('//')) return 'https:' + url;
-                    if (url.startsWith('/')) return 'https://agenciabrasil.ebc.com.br' + url;
-                    return 'https://agenciabrasil.ebc.com.br/' + url;
-                };
-
-                // 1. Procura o botão principal de download
-                const downloadBtn = doc.querySelector('a.btn-download-audio');
-                if (downloadBtn && downloadBtn.getAttribute('href')) {
-                    article.audioUrl = makeAbsolute(downloadBtn.getAttribute('href'));
-                    return article.audioUrl;
-                }
-
-                // 2. Procura a etiqueta <audio>
-                const audioTag = doc.querySelector('audio source, audio');
-                if (audioTag && audioTag.getAttribute('src')) {
-                    article.audioUrl = makeAbsolute(audioTag.getAttribute('src'));
-                    return article.audioUrl;
-                }
-
-                // 3. Procura qualquer link que termine em .mp3
-                const mp3Anchor = doc.querySelector('a[href*=".mp3"]');
-                if (mp3Anchor && mp3Anchor.getAttribute('href')) {
-                    article.audioUrl = makeAbsolute(mp3Anchor.getAttribute('href'));
-                    return article.audioUrl;
-                }
-            }
-        } catch (e) {
-            console.warn(`Erro ao tentar proxy ${proxyUrl} para ${targetUrl}`, e);
         }
-    }
-    return null;
+
+        iframe.onload = () => {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                // Busca especificamente a tag <a class="btn-download-audio" href="...">
+                const downloadBtn = iframeDoc.querySelector('a.btn-download-audio');
+                
+                if (downloadBtn && downloadBtn.getAttribute('href')) {
+                    let mp3Url = downloadBtn.getAttribute('href');
+                    if (mp3Url.startsWith('/')) {
+                        mp3Url = 'https://agenciabrasil.ebc.com.br' + mp3Url;
+                    }
+                    article.audioUrl = mp3Url;
+                    cleanup();
+                    resolve(mp3Url);
+                    return;
+                }
+            } catch (e) {
+                // Caso o navegador bloqueie acesso ao iframe por mesma origem (Same-Origin)
+                console.warn('Leitura de iframe oculto restrita por política do navegador.', e);
+            }
+            cleanup();
+            resolve(null);
+        };
+
+        iframe.onerror = () => {
+            cleanup();
+            resolve(null);
+        };
+
+        document.body.appendChild(iframe);
+    });
 }
 
         function formatDate(dateObj) {
@@ -1492,71 +1482,90 @@ async function fetchMp3FromAudioPage(article) {
             });
         }
 
-        async function openModal(article) {
-            const isRadio = article.source.includes('Rádio') || article.targetAudioPageUrl !== '';
-            
-            modalBody.innerHTML = `
-                <div class="card-badges" style="position:relative; top:0; left:0; margin-bottom:1rem;">
-                    <span class="card-badge">${escapeHtml(article.category)}</span>
-                    <span class="source-badge ${isRadio ? 'radio' : ''}">
-                        <i class="fa-solid ${isRadio ? 'fa-podcast' : 'fa-newspaper'}"></i>
-                        ${escapeHtml(article.source)}
-                    </span>
-                </div>
-                <h2>${escapeHtml(article.title)}</h2>
-                <div id="modal-audio-container">
-                    ${isRadio && !article.audioUrl ? `
-                        <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
-                            <div class="audio-loading-box">
-                                <div class="audio-loading-spinner"></div>
-                                <span>Buscando e carregando áudio da rádio...</span>
-                            </div>
-                        </div>
-                    ` : ''}
-                    ${article.audioUrl ? `
-                        <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
-                            <div class="audio-player-label" style="font-size: 0.9rem;">
-                                <span><i class="fa-solid fa-headphones"></i> Ouça a Reportagem Completa</span>
-                                <a href="${article.audioUrl}" download target="_blank" style="font-size:0.8rem; color:inherit;"><i class="fa-solid fa-download"></i> Baixar MP3</a>
-                            </div>
-                            <audio controls style="width: 100%; height: 40px;" src="${article.audioUrl}"></audio>
-                        </div>
-                    ` : ''}
-                </div>
-                <div class="modal-meta">
-                    <span><i class="fa-regular fa-clock"></i> Publicado em: ${article.pubDateFormatted}</span>
-                    <span><i class="fa-regular fa-user"></i> Por: ${escapeHtml(article.author)}</span>
-                </div>
-                ${article.image ? `<img src="${article.image}" alt="${escapeHtml(article.title)}">` : ''}
-                <div class="article-text">
-                    ${article.rawDescription}
-                </div>
-            `;
-            
-            articleModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+async function openModal(article) {
+    const isRadio = article.source.includes('Rádio') || article.targetAudioPageUrl !== '';
+    
+    let audioPageUrl = article.targetAudioPageUrl || article.link;
+    if (audioPageUrl && audioPageUrl.startsWith('/')) {
+        audioPageUrl = 'https://agenciabrasil.ebc.com.br' + audioPageUrl;
+    }
 
-            // Se for notícia da Rádio e o áudio ainda não tiver sido extraído, busca sob demanda
-            if (isRadio && !article.audioUrl && article.targetAudioPageUrl) {
-                const audioUrl = await fetchMp3FromAudioPage(article);
-                const audioContainer = document.getElementById('modal-audio-container');
-                if (audioContainer) {
-                    if (audioUrl) {
-                        audioContainer.innerHTML = `
-                            <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
-                                <div class="audio-player-label" style="font-size: 0.9rem;">
-                                    <span><i class="fa-solid fa-headphones"></i> Ouça a Reportagem Completa</span>
-                                    <a href="${audioUrl}" download target="_blank" style="font-size:0.8rem; color:inherit;"><i class="fa-solid fa-download"></i> Baixar MP3</a>
-                                </div>
-                                <audio controls autoplay style="width: 100%; height: 40px;" src="${audioUrl}"></audio>
-                            </div>
-                        `;
-                    } else {
-                        audioContainer.innerHTML = '';
-                    }
-                }
+    modalBody.innerHTML = `
+        <div class="card-badges" style="position:relative; top:0; left:0; margin-bottom:1rem;">
+            <span class="card-badge">${escapeHtml(article.category)}</span>
+            <span class="source-badge ${isRadio ? 'radio' : ''}">
+                <i class="fa-solid ${isRadio ? 'fa-podcast' : 'fa-newspaper'}"></i>
+                ${escapeHtml(article.source)}
+            </span>
+        </div>
+        <h2>${escapeHtml(article.title)}</h2>
+        
+        <div id="modal-audio-container">
+            ${isRadio && !article.audioUrl ? `
+                <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
+                    <div class="audio-loading-box">
+                        <div class="audio-loading-spinner"></div>
+                        <span>Localizando player de áudio na página...</span>
+                    </div>
+                </div>
+            ` : ''}
+
+            ${article.audioUrl ? `
+                <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
+                    <div class="audio-player-label" style="font-size: 0.9rem;">
+                        <span><i class="fa-solid fa-headphones"></i> Ouça a Reportagem Completa</span>
+                        <a href="${article.audioUrl}" download target="_blank" style="font-size:0.8rem; color:inherit;"><i class="fa-solid fa-download"></i> Baixar MP3</a>
+                    </div>
+                    <audio controls autoplay style="width: 100%; height: 40px;" src="${article.audioUrl}"></audio>
+                </div>
+            ` : ''}
+        </div>
+
+        <div class="modal-meta">
+            <span><i class="fa-regular fa-clock"></i> Publicado em: ${article.pubDateFormatted}</span>
+            <span><i class="fa-regular fa-user"></i> Por: ${escapeHtml(article.author)}</span>
+        </div>
+        ${article.image ? `<img src="${article.image}" alt="${escapeHtml(article.title)}">` : ''}
+        <div class="article-text">
+            ${article.rawDescription}
+        </div>
+    `;
+    
+    articleModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Se for notícia da Rádio e o áudio ainda não estiver em cache, extrai via iframe invisível no navegador
+    if (isRadio && !article.audioUrl && article.targetAudioPageUrl) {
+        const extractedAudioUrl = await fetchMp3FromAudioPage(article);
+        const audioContainer = document.getElementById('modal-audio-container');
+        
+        if (audioContainer) {
+            if (extractedAudioUrl) {
+                audioContainer.innerHTML = `
+                    <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
+                        <div class="audio-player-label" style="font-size: 0.9rem;">
+                            <span><i class="fa-solid fa-headphones"></i> Ouça a Reportagem Completa</span>
+                            <a href="${extractedAudioUrl}" download target="_blank" style="font-size:0.8rem; color:inherit;"><i class="fa-solid fa-download"></i> Baixar MP3</a>
+                        </div>
+                        <audio controls autoplay style="width: 100%; height: 40px;" src="${extractedAudioUrl}"></audio>
+                    </div>
+                `;
+            } else {
+                // Caso não encontre a tag a.btn-download-audio no DOM
+                audioContainer.innerHTML = `
+                    <div class="audio-player-wrapper" style="padding: 0.85rem 1rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 0.85rem; color: var(--accent-purple); font-weight: 600;">
+                            <i class="fa-solid fa-headphones"></i> Áudio disponível na página original
+                        </span>
+                        <a href="${audioPageUrl}" target="_blank" class="btn-reload" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+                            Ouvir na EBC <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                `;
             }
         }
+    }
+}
 
         function closeModal() {
             articleModal.classList.remove('active');
