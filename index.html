@@ -80,121 +80,6 @@
             font-family: inherit;
         }
 
-        /* Top Header Bar */
-        .top-bar {
-            background-color: #064e3b;
-            color: #ffffff;
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .top-bar-info {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        /* Main Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background-color: var(--bg-nav);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border-color);
-            transition: background-color var(--transition-speed);
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-badge {
-            background: linear-gradient(135deg, #047857 0%, #6d28d9 100%);
-            color: #ffffff;
-            font-weight: 800;
-            padding: 0.5rem 0.85rem;
-            border-radius: var(--radius-md);
-            font-size: 1.25rem;
-            letter-spacing: -0.5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-        }
-
-        .logo-title {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-title h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--text-primary);
-            line-height: 1.1;
-        }
-
-        .logo-title span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .theme-toggle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bg-surface-hover);
-            color: var(--text-primary);
-            transition: background-color 0.2s;
-        }
-
-        .theme-toggle:hover {
-            background-color: var(--border-color);
-        }
-
-        .btn-reload {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background-color: var(--accent-green);
-            color: #ffffff;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-        }
-
-        .btn-reload:hover {
-            background-color: var(--accent-green-hover);
-        }
-
         /* Controls Section */
         .controls-section {
             max-width: 1200px;
@@ -476,13 +361,6 @@
             letter-spacing: 0.5px;
         }
 
-        .audio-player-mini {
-            width: 100%;
-            height: 38px;
-            border-radius: var(--radius-sm);
-            outline: none;
-        }
-
         .audio-loading-box {
             display: flex;
             align-items: center;
@@ -724,26 +602,6 @@
             margin-bottom: 1.25rem;
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--bg-surface);
-            border-top: 1px solid var(--border-color);
-            padding: 2.5rem 1.5rem;
-            margin-top: 4rem;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -759,9 +617,6 @@
 
         /* Responsive Tweaks */
         @media (max-width: 768px) {
-            .top-bar-info {
-                display: none;
-            }
             .news-item {
                 flex-direction: column;
                 align-items: flex-start;
@@ -777,38 +632,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Bar de Utilidade do Topo -->
-    <div class="top-bar">
-        <div class="top-bar-info">
-            <span><i class="fa-solid fa-building-columns"></i> Empresa Brasil de Comunicação (EBC)</span>
-            <span><i class="fa-solid fa-rss"></i> Feeds: Agência Brasil + Rádioagência Nacional</span>
-        </div>
-        <div id="current-date">--:--</div>
-    </div>
-
-    <!-- Cabeçalho Principal -->
-    <header>
-        <div class="header-container">
-            <div class="logo-area">
-                <div class="logo-badge">EBC</div>
-                <div class="logo-title">
-                    <h1>PORTAL EBC NOTÍCIAS</h1>
-                    <span>Agência Brasil &amp; Rádioagência Nacional</span>
-                </div>
-            </div>
-
-            <div class="header-actions">
-                <button class="btn-reload" id="btn-reload" title="Atualizar Notícias">
-                    <i class="fa-solid fa-arrows-rotate"></i>
-                    <span class="btn-text">Atualizar</span>
-                </button>
-                <button class="theme-toggle" id="theme-toggle" title="Alternar Tema">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-            </div>
-        </div>
-    </header>
 
     <!-- Controles de Busca e Filtros -->
     <div class="controls-section">
@@ -877,14 +700,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Rodapé -->
-    <footer>
-        <div class="footer-content">
-            <p><strong>Portal EBC de Notícias</strong> | Leitura 100% integrada e unificada da Agência Brasil e Rádioagência Nacional.</p>
-            <p style="font-size: 0.8rem;">Desenvolvido para hospedagem no GitHub Pages com HTML, CSS e JS puros.</p>
-        </div>
-    </footer>
 
     <!-- Lógica JavaScript ES6+ -->
     <script>
@@ -1050,35 +865,19 @@
         const searchInput = document.getElementById('search-input');
         const statusBanner = document.getElementById('status-banner');
         const statusMessage = document.getElementById('status-message');
-        const btnReload = document.getElementById('btn-reload');
-        const themeToggle = document.getElementById('theme-toggle');
-        const currentDateEl = document.getElementById('current-date');
         const articleModal = document.getElementById('article-modal');
         const modalBody = document.getElementById('modal-body');
         const modalClose = document.getElementById('modal-close');
         const emptyState = document.getElementById('empty-state');
 
-        function updateDate() {
-            const now = new Date();
-            currentDateEl.textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        }
-
         function initTheme() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             if (savedTheme === 'dark') {
                 document.documentElement.classList.add('dark');
-                themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
             } else {
                 document.documentElement.classList.remove('dark');
-                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
             }
         }
-
-        themeToggle.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            themeToggle.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-        });
 
         async function fetchFeedDirect(targetUrl) {
             try {
@@ -1195,60 +994,52 @@
             return parsedArticles;
         }
 
-        /**
-         * Busca o .mp3 na página da Rádioagência via proxy CORS (executado sob demanda ao clicar na notícia)
-         */
-/**
- * Extrai o link direto do MP3 a partir da página de áudio da Rádioagência
- */
-async function fetchMp3FromAudioPage(article) {
-    if (article.audioUrl) return article.audioUrl;
-    if (!article.targetAudioPageUrl) return null;
+        async function fetchMp3FromAudioPage(article) {
+            if (article.audioUrl) return article.audioUrl;
+            if (!article.targetAudioPageUrl) return null;
 
-    let targetUrl = article.targetAudioPageUrl;
-    if (targetUrl.startsWith('/')) {
-        targetUrl = 'https://agenciabrasil.ebc.com.br' + targetUrl;
-    }
+            let targetUrl = article.targetAudioPageUrl;
+            if (targetUrl.startsWith('/')) {
+                targetUrl = 'https://agenciabrasil.ebc.com.br' + targetUrl;
+            }
 
-    // Lista de endpoints para resolver o HTML sem bloquear CORS
-    const proxyEndpoints = [
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-        `https://html-to-json.mp3-proxy.workers.dev/?url=${encodeURIComponent(targetUrl)}`,
-        `https://cors-anywhere.herokuapp.com/${targetUrl}`
-    ];
+            const proxyEndpoints = [
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+                `https://html-to-json.mp3-proxy.workers.dev/?url=${encodeURIComponent(targetUrl)}`,
+                `https://cors-anywhere.herokuapp.com/${targetUrl}`
+            ];
 
-    for (const endpoint of proxyEndpoints) {
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s por tentativa
+            for (const endpoint of proxyEndpoints) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 4000);
 
-            const response = await fetch(endpoint, { signal: controller.signal });
-            clearTimeout(timeoutId);
+                    const response = await fetch(endpoint, { signal: controller.signal });
+                    clearTimeout(timeoutId);
 
-            if (!response.ok) continue;
+                    if (!response.ok) continue;
 
-            const htmlText = await response.text();
-            if (htmlText) {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlText, 'text/html');
-                
-                // Extração exata solicitada: tag 'a' com classe 'btn-download-audio'
-                const downloadAnchor = doc.querySelector('a.btn-download-audio');
-                if (downloadAnchor && downloadAnchor.getAttribute('href')) {
-                    let mp3Url = downloadAnchor.getAttribute('href');
-                    if (mp3Url.startsWith('/')) {
-                        mp3Url = 'https://agenciabrasil.ebc.com.br' + mp3Url;
+                    const htmlText = await response.text();
+                    if (htmlText) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlText, 'text/html');
+                        
+                        const downloadAnchor = doc.querySelector('a.btn-download-audio');
+                        if (downloadAnchor && downloadAnchor.getAttribute('href')) {
+                            let mp3Url = downloadAnchor.getAttribute('href');
+                            if (mp3Url.startsWith('/')) {
+                                mp3Url = 'https://agenciabrasil.ebc.com.br' + mp3Url;
+                            }
+                            article.audioUrl = mp3Url;
+                            return mp3Url;
+                        }
                     }
-                    article.audioUrl = mp3Url;
-                    return mp3Url;
+                } catch (err) {
+                    console.warn(`Falha na extração de áudio via: ${endpoint}`);
                 }
             }
-        } catch (err) {
-            console.warn(`Falha na extração de áudio via: ${endpoint}`);
+            return null;
         }
-    }
-    return null;
-}
 
         function formatDate(dateObj) {
             if (isNaN(dateObj.getTime())) return 'Hoje';
@@ -1470,67 +1261,66 @@ async function fetchMp3FromAudioPage(article) {
             });
         }
 
-async function openModal(article) {
-    const isRadio = article.source.includes('Rádio') || article.targetAudioPageUrl !== '';
+        async function openModal(article) {
+            const isRadio = article.source.includes('Rádio') || article.targetAudioPageUrl !== '';
 
-    modalBody.innerHTML = `
-        <div class="card-badges" style="position:relative; top:0; left:0; margin-bottom:1rem;">
-            <span class="card-badge">${escapeHtml(article.category)}</span>
-            <span class="source-badge ${isRadio ? 'radio' : ''}">
-                <i class="fa-solid ${isRadio ? 'fa-podcast' : 'fa-newspaper'}"></i>
-                ${escapeHtml(article.source)}
-            </span>
-        </div>
-        <h2>${escapeHtml(article.title)}</h2>
-        
-        <div id="modal-audio-container">
-            ${isRadio ? `
-                <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
-                    <div class="audio-player-label" style="font-size: 0.9rem;">
-                        <span><i class="fa-solid fa-headphones"></i> Ouça a Reportagem Completa</span>
-                    </div>
-                    ${article.audioUrl ? `
-                        <audio controls autoplay style="width: 100%; height: 40px;" src="${article.audioUrl}"></audio>
-                    ` : `
-                        <div class="audio-loading-box" id="audio-fetch-status">
-                            <div class="audio-loading-spinner"></div>
-                            <span>Carregando leitor de áudio...</span>
-                        </div>
-                        <audio id="dynamic-audio-player" controls style="width: 100%; height: 40px; display: none;"></audio>
-                    `}
+            modalBody.innerHTML = `
+                <div class="card-badges" style="position:relative; top:0; left:0; margin-bottom:1rem;">
+                    <span class="card-badge">${escapeHtml(article.category)}</span>
+                    <span class="source-badge ${isRadio ? 'radio' : ''}">
+                        <i class="fa-solid ${isRadio ? 'fa-podcast' : 'fa-newspaper'}"></i>
+                        ${escapeHtml(article.source)}
+                    </span>
                 </div>
-            ` : ''}
-        </div>
+                <h2>${escapeHtml(article.title)}</h2>
+                
+                <div id="modal-audio-container">
+                    ${isRadio ? `
+                        <div class="audio-player-wrapper" style="padding: 0.8rem 1rem; margin-bottom: 1.25rem;">
+                            <div class="audio-player-label" style="font-size: 0.9rem;">
+                                <span><i class="fa-solid fa-headphones"></i> Ouça a Reportagem Completa</span>
+                            </div>
+                            ${article.audioUrl ? `
+                                <audio controls autoplay style="width: 100%; height: 40px;" src="${article.audioUrl}"></audio>
+                            ` : `
+                                <div class="audio-loading-box" id="audio-fetch-status">
+                                    <div class="audio-loading-spinner"></div>
+                                    <span>Carregando leitor de áudio...</span>
+                                </div>
+                                <audio id="dynamic-audio-player" controls style="width: 100%; height: 40px; display: none;"></audio>
+                            `}
+                        </div>
+                    ` : ''}
+                </div>
 
-        <div class="modal-meta">
-            <span><i class="fa-regular fa-clock"></i> Publicado em: ${article.pubDateFormatted}</span>
-            <span><i class="fa-regular fa-user"></i> Por: ${escapeHtml(article.author)}</span>
-        </div>
-        ${article.image ? `<img src="${article.image}" alt="${escapeHtml(article.title)}">` : ''}
-        <div class="article-text">
-            ${article.rawDescription}
-        </div>
-    `;
-    
-    articleModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+                <div class="modal-meta">
+                    <span><i class="fa-regular fa-clock"></i> Publicado em: ${article.pubDateFormatted}</span>
+                    <span><i class="fa-regular fa-user"></i> Por: ${escapeHtml(article.author)}</span>
+                </div>
+                ${article.image ? `<img src="${article.image}" alt="${escapeHtml(article.title)}">` : ''}
+                <div class="article-text">
+                    ${article.rawDescription}
+                </div>
+            `;
+            
+            articleModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
 
-    // Se é matéria de rádio e o áudio ainda não foi carregado
-    if (isRadio && !article.audioUrl && article.targetAudioPageUrl) {
-        const audioUrl = await fetchMp3FromAudioPage(article);
-        const statusBox = document.getElementById('audio-fetch-status');
-        const player = document.getElementById('dynamic-audio-player');
+            if (isRadio && !article.audioUrl && article.targetAudioPageUrl) {
+                const audioUrl = await fetchMp3FromAudioPage(article);
+                const statusBox = document.getElementById('audio-fetch-status');
+                const player = document.getElementById('dynamic-audio-player');
 
-        if (audioUrl && player) {
-            player.src = audioUrl;
-            player.style.display = 'block';
-            if (statusBox) statusBox.style.display = 'none';
-            player.play().catch(() => {}); // Autoplay seguro
-        } else if (statusBox) {
-            statusBox.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-circle-exclamation"></i> Áudio indisponível para esta matéria no momento.</span>';
+                if (audioUrl && player) {
+                    player.src = audioUrl;
+                    player.style.display = 'block';
+                    if (statusBox) statusBox.style.display = 'none';
+                    player.play().catch(() => {});
+                } else if (statusBox) {
+                    statusBox.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-circle-exclamation"></i> Áudio indisponível para esta matéria no momento.</span>';
+                }
+            }
         }
-    }
-}
 
         function closeModal() {
             articleModal.classList.remove('active');
@@ -1545,14 +1335,6 @@ async function openModal(article) {
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.trim();
             renderPage();
-        });
-
-        btnReload.addEventListener('click', () => {
-            const icon = btnReload.querySelector('i');
-            icon.classList.add('fa-spin');
-            loadNews(activeCategory).finally(() => {
-                setTimeout(() => icon.classList.remove('fa-spin'), 500);
-            });
         });
 
         function showLoading(show) {
@@ -1570,7 +1352,6 @@ async function openModal(article) {
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            updateDate();
             initTheme();
             renderCategoryChips();
             loadNews('all');
